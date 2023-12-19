@@ -10,6 +10,8 @@ new nodejs.NodejsFunction(stack, "CJS", {
   entry: "src/handler.ts",
   architecture: lambda.Architecture.ARM_64,
   runtime: lambda.Runtime.NODEJS_20_X,
+}).addFunctionUrl({
+  authType: lambda.FunctionUrlAuthType.NONE,
 });
 
 new nodejs.NodejsFunction(stack, "ESM", {
@@ -20,6 +22,8 @@ new nodejs.NodejsFunction(stack, "ESM", {
   bundling: {
     target: "node20",
     format: nodejs.OutputFormat.ESM,
-    nodeModules: ["zod", "@aws-lambda-powertools/logger"],
+    nodeModules: ["@aws-lambda-powertools/logger"],
   },
+}).addFunctionUrl({
+  authType: lambda.FunctionUrlAuthType.NONE,
 });

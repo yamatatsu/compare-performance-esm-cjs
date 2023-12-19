@@ -1,11 +1,18 @@
-import * as zod from "zod";
+import { object, string, safeParse } from "valibot";
 import { Logger } from "@aws-lambda-powertools/logger";
 
 const logger = new Logger();
-const eventSchema = zod.object({ foo: zod.string() });
+const eventSchema = object({ foo: string() });
 
 export const handler = async (event: unknown) => {
-  const { foo } = eventSchema.parse(event);
-  logger.info("foo", { foo });
-  return { foo };
+  logger.info("event", { event });
+  const result = safeParse(eventSchema, event);
+  if (!result.success) {
+    logger.error("invalid event", result);
+    return {
+      status: 400,
+      body: JSON.stringify(result.error),
+    };
+  }
+  return { status: 200, body: JSON.stringify(result) };
 };

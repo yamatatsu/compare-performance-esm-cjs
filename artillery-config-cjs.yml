@@ -1,0 +1,11 @@
+config:
+  target: "{{ $env.CJS_ENDPOINT }}"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: 60 second load test
+
+scenarios:
+  - flow:
+      - get:
+          url: "/"
